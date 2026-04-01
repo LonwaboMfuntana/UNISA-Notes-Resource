@@ -1,0 +1,155 @@
+body{
+    background: rgb(0, 0, 0);
+    font-family: Arial, Helvetica, sans-serif;
+    color: white;
+    margin: 0px;
+    padding: 0px;
+}
+header {
+    /*background-color:blueviolet;
+    background-image: url("AboutMeImage.jpg");*/
+    margin: 10px;
+    padding: 10px;
+    text-align: center;
+    height: 400px;
+    /*margin-bottom: 140px;*/
+}
+
+.cmheader{
+    height: 30px;
+}
+
+.myModulesHeader{
+    height: 30px;
+}
+
+/*.myhead{
+    display: flex;
+    flex-direction: row;
+}*/
+
+.myhead{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    /*margin-bottom: 40px;*/
+}
+.myhead figcaption{
+    /*text-align: center;*/
+    margin: auto;
+    /*width: 200px;*/
+    color: rgb(255, 255, 255);
+}
+.myhead img{
+    border: 3px solid white;
+    width: 280px;
+    border-radius: 50%;
+}
+section {
+    background-color: brown;
+    margin: 10px;
+    padding: 10px;
+    display: flex;
+    flex-direction: row;
+}
+
+section.gmail{
+    background-color: brown;
+}
+
+section.whatsapp{
+    background-color: green;
+}
+
+section.x{
+    background-color: rgb(0, 140, 255);
+}
+
+section.insta{
+    background-color: rgb(79, 91, 213);
+}
+
+section.tiktok{
+    background-color: aliceblue;
+    color: black;
+}
+
+div {
+    background-color: rgb(0, 0, 0);
+    width:100px;
+    margin:auto;
+    text-align: center;
+}
+
+ul{
+    background-color: brown;
+    margin: 0px;
+    padding: 0px;
+    list-style-type: none;
+    /*width: 320px;*/
+}
+
+li{
+    display: inline-block;
+    background-color: rgb(0, 0, 0);
+    /*color: black;*/
+    width: 100px;
+    margin: 10px;
+    padding: 0px;
+    /*text-align: center;*/
+}
+
+a{
+    text-decoration: none;
+    color: white;
+}
+
+a:hover{
+    text-decoration: underline;
+}
+
+footer{
+    background-color: brown;
+    text-align: center;
+    margin: 10px;
+    padding: 10px;
+    /*color: white;*/
+}
+
+@media screen and (min-width: 501px) and (max-width: 639px){
+    header{
+        margin-bottom: 40px;
+    }
+    
+}
+
+@media  screen and (min-width: 441px) and (max-width:500px){
+    header{
+        margin-bottom: 140px;
+    }
+    
+}
+
+@media screen and (max-width: 440px) {
+    .section{
+        width: 100%;
+    }
+
+    header{
+        margin-bottom: 240px;
+        flex-direction: column;
+        display: flex;
+        align-items: center;
+
+    }
+
+    .myhead{
+        display: flex;
+        width: 200px;
+        /*flex-direction: column;*/
+        /*align-items: center;*/
+        /*justify-content: center;*/
+    }
+    
+}

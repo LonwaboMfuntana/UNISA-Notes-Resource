@@ -37,7 +37,8 @@ header {
 }
 .myhead figcaption{
     /*text-align: center;*/
-    margin: auto;
+    margin: 5px;
+    padding: 5px;
     /*width: 200px;*/
     color: rgb(255, 255, 255);
 }

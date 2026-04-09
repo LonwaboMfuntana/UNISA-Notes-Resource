@@ -144,7 +144,7 @@ footer{
     }
 
     header{
-        margin-bottom: auto;
+        margin-bottom: 100px;
         flex-direction: column;
         display: flex;
         align-items: center;

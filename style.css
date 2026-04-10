@@ -8,10 +8,9 @@ body{
 header {
     /*background-color:blueviolet;*/
     background-image: url("5706210.jpg");
-    background-size: contain;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-color: black; /* fills empty space */
+    background-size: cover;
+background-position: center;
+background-repeat: no-repeat;
     margin: 10px;
     padding: 10px;
     text-align: center;

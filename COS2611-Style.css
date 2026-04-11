@@ -15,6 +15,7 @@ nav {
 }
 
 .nav-sep {
+  color: var(--text3);
   font-size:12px;
 }
 

@@ -1,0 +1,1179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>APM2616 – Computer Algebra | UNISA Notes</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700&family=DM+Mono:wght@300;400;500&family=Lora:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0d0f14;
+  --bg2: #13151c;
+  --bg3: #1a1d27;
+  --surface: #1f2235;
+  --surface2: #252840;
+  --border: rgba(255,255,255,0.07);
+  --border2: rgba(255,255,255,0.12);
+  --text: #e8eaf2;
+  --text2: #8f93a8;
+  --text3: #5a5e73;
+  --accent: #6c8aff;
+  --accent2: #4fd6a0;
+  --accent3: #f0a06a;
+  --accent-glow: rgba(108,138,255,0.15);
+  --red: #ff6b8a;
+  --mono: 'DM Mono', monospace;
+  --sans: 'Syne', sans-serif;
+  --serif: 'Lora', serif;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--sans);
+  min-height: 100vh;
+  line-height: 1.6;
+}
+
+/* SUBTLE GRID BACKGROUND */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(108,138,255,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(108,138,255,0.03) 1px, transparent 1px);
+  background-size: 40px 40px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* TOP GLOW */
+body::after {
+  content: '';
+  position: fixed;
+  top: -200px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 600px;
+  height: 400px;
+  background: radial-gradient(ellipse, rgba(108,138,255,0.08) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.wrapper { position: relative; z-index: 1; max-width: 860px; margin: 0 auto; padding: 0 1.5rem 4rem; }
+
+/* NAV */
+nav {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.25rem 0;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 2.5rem;
+  animation: fadeDown 0.4s ease both;
+}
+
+.nav-brand {
+  font-family: var(--mono);
+  font-size: 13px;
+  color: var(--accent);
+  letter-spacing: 0.05em;
+  text-decoration: none;
+}
+
+.nav-sep { color: var(--text3); font-size: 12px; }
+
+.nav-crumb { font-size: 13px; color: var(--text2); }
+.nav-crumb span { color: var(--text); }
+
+.nav-badge {
+  margin-left: auto;
+  font-family: var(--mono);
+  font-size: 11px;
+  padding: 4px 10px;
+  border: 1px solid var(--accent);
+  color: var(--accent);
+  border-radius: 4px;
+  letter-spacing: 0.08em;
+}
+
+/* HERO */
+.hero {
+  margin-bottom: 2.5rem;
+  animation: fadeUp 0.5s ease 0.1s both;
+}
+
+.hero-eyebrow {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--accent2);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.hero-eyebrow::before {
+  content: '';
+  display: inline-block;
+  width: 24px;
+  height: 1px;
+  background: var(--accent2);
+}
+
+.hero h1 {
+  font-size: 36px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+  margin-bottom: 8px;
+  color: var(--text);
+}
+
+.hero h1 em {
+  font-style: normal;
+  color: var(--accent);
+}
+
+.hero p {
+  font-size: 15px;
+  color: var(--text2);
+  font-family: var(--serif);
+  font-style: italic;
+}
+
+/* STATS */
+.stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-bottom: 2rem;
+  animation: fadeUp 0.5s ease 0.2s both;
+}
+
+.stat-card {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 1rem 1.25rem;
+  transition: border-color 0.2s;
+}
+
+.stat-card:hover { border-color: var(--border2); }
+
+.stat-num {
+  font-size: 28px;
+  font-weight: 700;
+  font-family: var(--mono);
+  color: var(--text);
+}
+
+.stat-num.blue { color: var(--accent); }
+.stat-num.green { color: var(--accent2); }
+.stat-num.orange { color: var(--accent3); }
+
+.stat-label {
+  font-size: 12px;
+  color: var(--text3);
+  margin-top: 2px;
+  letter-spacing: 0.04em;
+}
+
+/* TABS */
+.tabs-wrapper {
+  display: flex;
+  gap: 2px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 2rem;
+  animation: fadeUp 0.5s ease 0.25s both;
+}
+
+.tab-btn {
+  padding: 10px 20px;
+  font-family: var(--sans);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text3);
+  background: none;
+  border: none;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+  letter-spacing: 0.04em;
+  transition: color 0.2s, border-color 0.2s;
+}
+
+.tab-btn:hover { color: var(--text2); }
+
+.tab-btn.active {
+  color: var(--accent);
+  border-bottom-color: var(--accent);
+}
+
+/* SECTION HEADERS */
+.section-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.section-label {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text3);
+}
+
+.upload-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  font-family: var(--sans);
+  font-weight: 500;
+  padding: 6px 14px;
+  border-radius: 6px;
+  border: 1px solid var(--accent);
+  color: var(--accent);
+  background: var(--accent-glow);
+  cursor: pointer;
+  transition: background 0.2s;
+  letter-spacing: 0.03em;
+}
+
+.upload-btn:hover { background: rgba(108,138,255,0.22); }
+
+/* RESOURCE CARDS */
+.resource-card {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 1rem 1.25rem;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  transition: border-color 0.2s, background 0.2s;
+  animation: fadeUp 0.35s ease both;
+}
+
+.resource-card:hover {
+  border-color: var(--border2);
+  background: var(--surface);
+}
+
+.file-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 500;
+  flex-shrink: 0;
+  letter-spacing: 0.05em;
+}
+
+.file-icon.pdf { background: rgba(240,160,106,0.12); color: var(--accent3); border: 1px solid rgba(240,160,106,0.2); }
+.file-icon.doc { background: rgba(79,214,160,0.1); color: var(--accent2); border: 1px solid rgba(79,214,160,0.2); }
+.file-icon.exam { background: rgba(108,138,255,0.1); color: var(--accent); border: 1px solid rgba(108,138,255,0.2); }
+
+.rc-info { flex: 1; min-width: 0; }
+.rc-title { font-size: 14px; font-weight: 600; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.rc-meta { font-size: 12px; color: var(--text3); margin-top: 2px; font-family: var(--mono); }
+
+.rc-actions { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+
+.tag-pill {
+  font-size: 10px;
+  font-family: var(--mono);
+  padding: 3px 8px;
+  border-radius: 4px;
+  letter-spacing: 0.06em;
+}
+
+.tag-pill.memo { background: rgba(79,214,160,0.12); color: var(--accent2); border: 1px solid rgba(79,214,160,0.2); }
+.tag-pill.no-memo { background: rgba(255,107,138,0.1); color: var(--red); border: 1px solid rgba(255,107,138,0.2); }
+.tag-pill.textbook { background: rgba(108,138,255,0.1); color: var(--accent); border: 1px solid rgba(108,138,255,0.2); }
+
+.discuss-count {
+  font-size: 12px;
+  color: var(--text3);
+  font-family: var(--mono);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.discuss-count svg { opacity: 0.5; }
+
+.btn-ghost {
+  font-size: 12px;
+  font-family: var(--sans);
+  font-weight: 500;
+  padding: 5px 12px;
+  border: 1px solid var(--border2);
+  border-radius: 6px;
+  color: var(--text2);
+  background: none;
+  cursor: pointer;
+  transition: all 0.15s;
+  letter-spacing: 0.02em;
+}
+
+.btn-ghost:hover { border-color: var(--accent); color: var(--accent); }
+
+.btn-accent {
+  font-size: 12px;
+  font-family: var(--sans);
+  font-weight: 500;
+  padding: 5px 12px;
+  border: 1px solid var(--accent);
+  border-radius: 6px;
+  color: var(--accent);
+  background: var(--accent-glow);
+  cursor: pointer;
+  transition: background 0.15s;
+  letter-spacing: 0.02em;
+}
+
+.btn-accent:hover { background: rgba(108,138,255,0.22); }
+
+/* DIVIDER */
+.divider {
+  height: 1px;
+  background: var(--border);
+  margin: 1.5rem 0;
+}
+
+/* FORUM */
+.forum-card {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  margin-bottom: 12px;
+  overflow: hidden;
+  transition: border-color 0.2s;
+  animation: fadeUp 0.35s ease both;
+}
+
+.forum-card:hover { border-color: var(--border2); }
+
+.forum-main {
+  padding: 1rem 1.25rem;
+  display: flex;
+  gap: 12px;
+}
+
+.avatar {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 600;
+  flex-shrink: 0;
+  font-family: var(--mono);
+}
+
+.av-purple { background: rgba(108,138,255,0.15); color: var(--accent); }
+.av-green { background: rgba(79,214,160,0.12); color: var(--accent2); }
+.av-orange { background: rgba(240,160,106,0.12); color: var(--accent3); }
+.av-red { background: rgba(255,107,138,0.1); color: var(--red); }
+
+.forum-content { flex: 1; }
+.forum-title { font-size: 14px; font-weight: 600; color: var(--text); margin-bottom: 4px; }
+.forum-snippet { font-size: 13px; color: var(--text2); font-family: var(--serif); line-height: 1.55; }
+.forum-by { font-size: 11px; color: var(--text3); font-family: var(--mono); margin-top: 6px; }
+
+.forum-tag {
+  flex-shrink: 0;
+  font-size: 10px;
+  font-family: var(--mono);
+  padding: 3px 8px;
+  border-radius: 4px;
+  height: fit-content;
+  letter-spacing: 0.06em;
+}
+
+.forum-tag.note { background: rgba(79,214,160,0.1); color: var(--accent2); border: 1px solid rgba(79,214,160,0.15); }
+.forum-tag.paper { background: rgba(108,138,255,0.1); color: var(--accent); border: 1px solid rgba(108,138,255,0.15); }
+.forum-tag.general { background: rgba(240,160,106,0.1); color: var(--accent3); border: 1px solid rgba(240,160,106,0.15); }
+
+.reply {
+  margin: 0 1.25rem 12px 2.5rem;
+  padding: 10px 14px;
+  background: var(--bg2);
+  border-radius: 8px;
+  border-left: 2px solid var(--accent);
+  display: flex;
+  gap: 10px;
+}
+
+.reply-body { flex: 1; }
+.reply-body p { font-size: 13px; color: var(--text2); font-family: var(--serif); line-height: 1.5; }
+.reply-meta { font-size: 11px; color: var(--text3); font-family: var(--mono); margin-bottom: 4px; }
+
+.forum-footer {
+  padding: 8px 1.25rem;
+  background: var(--bg2);
+  border-top: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.forum-stat { font-size: 12px; color: var(--text3); font-family: var(--mono); display: flex; align-items: center; gap: 5px; }
+
+.reply-input-wrap { margin: 0 1.25rem 12px; }
+
+.reply-input-wrap textarea {
+  width: 100%;
+  background: var(--bg2);
+  border: 1px solid var(--border2);
+  border-radius: 8px;
+  color: var(--text);
+  font-family: var(--serif);
+  font-size: 13px;
+  padding: 10px 14px;
+  resize: none;
+  outline: none;
+  transition: border-color 0.2s;
+  line-height: 1.5;
+}
+
+.reply-input-wrap textarea::placeholder { color: var(--text3); }
+.reply-input-wrap textarea:focus { border-color: var(--accent); }
+
+.reply-actions { display: flex; justify-content: flex-end; gap: 8px; margin-top: 6px; }
+
+/* NEW THREAD FORM */
+.new-thread-form {
+  background: var(--bg3);
+  border: 1px solid var(--border2);
+  border-radius: 10px;
+  padding: 1.25rem;
+  margin-bottom: 1.5rem;
+  display: none;
+  animation: fadeUp 0.3s ease both;
+}
+
+.new-thread-form.open { display: block; }
+
+.form-field { margin-bottom: 12px; }
+.form-label { font-size: 11px; font-family: var(--mono); color: var(--text3); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 6px; display: block; }
+
+.form-input {
+  width: 100%;
+  background: var(--bg2);
+  border: 1px solid var(--border2);
+  border-radius: 7px;
+  color: var(--text);
+  font-family: var(--sans);
+  font-size: 13px;
+  padding: 9px 12px;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.form-input:focus { border-color: var(--accent); }
+.form-input::placeholder { color: var(--text3); }
+
+.form-select {
+  width: 100%;
+  background: var(--bg2);
+  border: 1px solid var(--border2);
+  border-radius: 7px;
+  color: var(--text);
+  font-family: var(--mono);
+  font-size: 12px;
+  padding: 9px 12px;
+  outline: none;
+  cursor: pointer;
+  appearance: none;
+}
+
+.form-textarea {
+  width: 100%;
+  background: var(--bg2);
+  border: 1px solid var(--border2);
+  border-radius: 7px;
+  color: var(--text);
+  font-family: var(--serif);
+  font-size: 13px;
+  padding: 9px 12px;
+  outline: none;
+  resize: vertical;
+  min-height: 80px;
+  line-height: 1.55;
+  transition: border-color 0.2s;
+}
+
+.form-textarea:focus { border-color: var(--accent); }
+.form-textarea::placeholder { color: var(--text3); }
+
+/* UPLOAD ZONE */
+.upload-zone {
+  border: 1px dashed var(--border2);
+  border-radius: 10px;
+  padding: 2rem;
+  text-align: center;
+  margin-bottom: 1.5rem;
+  transition: border-color 0.2s, background 0.2s;
+  cursor: pointer;
+}
+
+.upload-zone:hover { border-color: var(--accent); background: var(--accent-glow); }
+.upload-zone-icon { font-size: 28px; margin-bottom: 8px; opacity: 0.6; }
+.upload-zone strong { display: block; font-size: 14px; font-weight: 600; color: var(--text); margin-bottom: 4px; }
+.upload-zone p { font-size: 13px; color: var(--text3); font-family: var(--serif); }
+
+/* VOTE BUTTON */
+.vote-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  background: none;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 4px 8px;
+  cursor: pointer;
+  color: var(--text3);
+  font-family: var(--mono);
+  font-size: 11px;
+  transition: all 0.15s;
+  flex-shrink: 0;
+}
+
+.vote-btn:hover { border-color: var(--accent2); color: var(--accent2); }
+.vote-btn.voted { border-color: var(--accent2); color: var(--accent2); background: rgba(79,214,160,0.08); }
+
+/* TABS CONTENT */
+.tab-content { display: none; animation: fadeUp 0.3s ease both; }
+.tab-content.active { display: block; }
+
+/* ANIMATIONS */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeDown {
+  from { opacity: 0; transform: translateY(-8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* EXPANDED REPLIES */
+.replies-section { display: none; }
+.replies-section.open { display: block; }
+
+/* FOOTER */
+.page-footer {
+  border-top: 1px solid var(--border);
+  padding-top: 2rem;
+  margin-top: 3rem;
+  text-align: center;
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--text3);
+  letter-spacing: 0.06em;
+}
+
+/* SCROLLBAR */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--surface2); border-radius: 3px; }
+
+/* RESPONSIVE */
+@media (max-width: 600px) {
+  .hero h1 { font-size: 26px; }
+  .stats { grid-template-columns: 1fr 1fr; }
+  .stats .stat-card:last-child { grid-column: span 2; }
+  .rc-actions { flex-wrap: wrap; }
+  .tag-pill { display: none; }
+}
+</style>
+</head>
+<body>
+
+<div class="wrapper">
+
+  <!-- NAV -->
+  <nav>
+    <a href="#" class="nav-brand">UNISA_NOTES</a>
+    <span class="nav-sep">/</span>
+    <span class="nav-crumb">Mathematics &rsaquo; <span>APM2616</span></span>
+    <div class="nav-badge">APM2616</div>
+  </nav>
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-eyebrow">Computer Algebra</div>
+    <h1>Study resources for <em>APM2616</em></h1>
+    <p>Notes, past papers, and community discussion — all in one place.</p>
+  </div>
+
+  <!-- STATS -->
+  <div class="stats">
+    <div class="stat-card">
+      <div class="stat-num blue" id="stat-notes">6</div>
+      <div class="stat-label">Notes &amp; textbooks</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num green" id="stat-papers">4</div>
+      <div class="stat-label">Past papers</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num orange" id="stat-threads">12</div>
+      <div class="stat-label">Forum threads</div>
+    </div>
+  </div>
+
+  <!-- TABS -->
+  <div class="tabs-wrapper">
+    <button class="tab-btn active" onclick="switchTab('notes', this)">Notes</button>
+    <button class="tab-btn" onclick="switchTab('papers', this)">Past Papers</button>
+    <button class="tab-btn" onclick="switchTab('forum', this)">Forum</button>
+  </div>
+
+  <!-- ======== NOTES TAB ======== -->
+  <div id="tab-notes" class="tab-content active">
+
+    <div class="upload-zone" onclick="alert('Upload functionality — connect to your backend!')">
+      <div class="upload-zone-icon">📄</div>
+      <strong>Share your notes</strong>
+      <p>Upload PDFs, Word docs, or images to help other students</p>
+    </div>
+
+    <div class="section-head">
+      <div class="section-label">Textbooks</div>
+    </div>
+
+    <div class="resource-card" style="animation-delay:0.05s">
+      <div class="file-icon pdf">PDF</div>
+      <div class="rc-info">
+        <div class="rc-title">LaTeX: A Document Preparation System</div>
+        <div class="rc-meta">Lamport, Leslie · 4.2 MB · Textbook</div>
+      </div>
+      <div class="rc-actions">
+        <span class="tag-pill textbook">TEXTBOOK</span>
+        <button class="discuss-count btn-ghost" onclick="openForumFor('LaTeX Textbook')">
+          <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+          3
+        </button>
+        <a href="https://pub-52a49ba85c1a4db6abe16d45752e7bfb.r2.dev/LATEX%20a%20document%20preparation%20system%20users%20guide%20and%20reference%20manual%20(Lamport%2C%20Leslie)%20(z-library.sk%2C%201lib.sk%2C%20z-lib.sk).pdf" target="_blank" class="btn-ghost">Download</a>
+        <button class="btn-accent" onclick="openForumFor('LaTeX Textbook')">Discuss</button>
+      </div>
+    </div>
+
+    <div class="resource-card" style="animation-delay:0.1s">
+      <div class="file-icon pdf">PDF</div>
+      <div class="rc-info">
+        <div class="rc-title">MuPAD Tutorial</div>
+        <div class="rc-meta">Gerhard, Jürgen · 3.8 MB · Textbook</div>
+      </div>
+      <div class="rc-actions">
+        <span class="tag-pill textbook">TEXTBOOK</span>
+        <button class="discuss-count btn-ghost" onclick="openForumFor('MuPAD Tutorial')">
+          <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+          7
+        </button>
+        <a href="https://pub-52a49ba85c1a4db6abe16d45752e7bfb.r2.dev/MuPAD%20tutorial%20a%20version%20and%20platform%20independent%20introduction%20(Gerhard%2C%20J%C3%BCrgen%2C%201967-)%20(z-library.sk%2C%201lib.sk%2C%20z-lib.sk).pdf" target="_blank" class="btn-ghost">Download</a>
+        <button class="btn-accent" onclick="openForumFor('MuPAD Tutorial')">Discuss</button>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="section-head">
+      <div class="section-label">Student Notes</div>
+      <button class="upload-btn" onclick="alert('Upload functionality — connect to your backend!')">
+        + Upload notes
+      </button>
+    </div>
+
+    <div class="resource-card" style="animation-delay:0.15s">
+      <div class="file-icon doc">DOC</div>
+      <div class="rc-info">
+        <div class="rc-title">Chapter 3 Summary – Symbolic Computation</div>
+        <div class="rc-meta">@thabo_m · uploaded 2 weeks ago</div>
+      </div>
+      <div class="rc-actions">
+        <button class="discuss-count btn-ghost" onclick="openForumFor('Chapter 3 Summary')">
+          <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+          12
+        </button>
+        <button class="btn-ghost">Download</button>
+        <button class="btn-accent" onclick="openForumFor('Chapter 3 Summary')">Discuss</button>
+      </div>
+    </div>
+
+    <div class="resource-card" style="animation-delay:0.2s">
+      <div class="file-icon pdf">PDF</div>
+      <div class="rc-info">
+        <div class="rc-title">Exam Prep – Key Formulas &amp; Derivations</div>
+        <div class="rc-meta">@priya_k · uploaded 1 month ago</div>
+      </div>
+      <div class="rc-actions">
+        <button class="discuss-count btn-ghost" onclick="openForumFor('Exam Prep Notes')">
+          <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+          5
+        </button>
+        <button class="btn-ghost">Download</button>
+        <button class="btn-accent" onclick="openForumFor('Exam Prep Notes')">Discuss</button>
+      </div>
+    </div>
+
+    <div class="resource-card" style="animation-delay:0.25s">
+      <div class="file-icon doc">DOC</div>
+      <div class="rc-info">
+        <div class="rc-title">Groebner Basis – Worked Examples</div>
+        <div class="rc-meta">@lena_n · uploaded 3 weeks ago</div>
+      </div>
+      <div class="rc-actions">
+        <button class="discuss-count btn-ghost">
+          <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+          2
+        </button>
+        <button class="btn-ghost">Download</button>
+        <button class="btn-accent">Discuss</button>
+      </div>
+    </div>
+
+    <div class="resource-card" style="animation-delay:0.3s">
+      <div class="file-icon pdf">PDF</div>
+      <div class="rc-info">
+        <div class="rc-title">Polynomial Factorization Study Sheet</div>
+        <div class="rc-meta">@sipho_k · uploaded 5 days ago</div>
+      </div>
+      <div class="rc-actions">
+        <button class="discuss-count btn-ghost">
+          <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+          0
+        </button>
+        <button class="btn-ghost">Download</button>
+        <button class="btn-accent">Discuss</button>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ======== PAST PAPERS TAB ======== -->
+  <div id="tab-papers" class="tab-content">
+
+    <div class="upload-zone" onclick="alert('Upload functionality — connect to your backend!')">
+      <div class="upload-zone-icon">📋</div>
+      <strong>Have a past paper?</strong>
+      <p>Upload past exam papers and memos to help everyone prepare</p>
+    </div>
+
+    <div class="section-head">
+      <div class="section-label">Exam Papers</div>
+      <button class="upload-btn" onclick="alert('Upload functionality — connect to your backend!')">+ Upload paper</button>
+    </div>
+
+    <div class="resource-card" style="animation-delay:0.05s">
+      <div class="file-icon exam">PDF</div>
+      <div class="rc-info">
+        <div class="rc-title">APM2616 – October/November 2023</div>
+        <div class="rc-meta">Exam paper · Memo included</div>
+      </div>
+      <div class="rc-actions">
+        <span class="tag-pill memo">MEMO</span>
+        <button class="discuss-count btn-ghost" onclick="openForumFor('Oct/Nov 2023 Paper')">
+          <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+          9
+        </button>
+        <button class="btn-ghost">Download</button>
+        <button class="btn-accent" onclick="openForumFor('Oct/Nov 2023 Paper')">Discuss</button>
+      </div>
+    </div>
+
+    <div class="resource-card" style="animation-delay:0.1s">
+      <div class="file-icon exam">PDF</div>
+      <div class="rc-info">
+        <div class="rc-title">APM2616 – May/June 2023</div>
+        <div class="rc-meta">Exam paper · No memo</div>
+      </div>
+      <div class="rc-actions">
+        <span class="tag-pill no-memo">NO MEMO</span>
+        <button class="discuss-count btn-ghost">
+          <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+          2
+        </button>
+        <button class="btn-ghost">Download</button>
+        <button class="btn-accent">Discuss</button>
+      </div>
+    </div>
+
+    <div class="resource-card" style="animation-delay:0.15s">
+      <div class="file-icon exam">PDF</div>
+      <div class="rc-info">
+        <div class="rc-title">APM2616 – October/November 2022</div>
+        <div class="rc-meta">Exam paper · Memo included</div>
+      </div>
+      <div class="rc-actions">
+        <span class="tag-pill memo">MEMO</span>
+        <button class="discuss-count btn-ghost" onclick="openForumFor('Oct/Nov 2022 Paper')">
+          <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+          14
+        </button>
+        <button class="btn-ghost">Download</button>
+        <button class="btn-accent" onclick="openForumFor('Oct/Nov 2022 Paper')">Discuss</button>
+      </div>
+    </div>
+
+    <div class="resource-card" style="animation-delay:0.2s">
+      <div class="file-icon exam">PDF</div>
+      <div class="rc-info">
+        <div class="rc-title">APM2616 – May/June 2022</div>
+        <div class="rc-meta">Exam paper · Memo included</div>
+      </div>
+      <div class="rc-actions">
+        <span class="tag-pill memo">MEMO</span>
+        <button class="discuss-count btn-ghost">
+          <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+          6
+        </button>
+        <button class="btn-ghost">Download</button>
+        <button class="btn-accent">Discuss</button>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ======== FORUM TAB ======== -->
+  <div id="tab-forum" class="tab-content">
+
+    <div class="section-head">
+      <div class="section-label" id="forum-label">Recent Discussions</div>
+      <button class="upload-btn" onclick="toggleNewThread()">+ New thread</button>
+    </div>
+
+    <!-- NEW THREAD FORM -->
+    <div class="new-thread-form" id="new-thread-form">
+      <div class="form-field">
+        <label class="form-label">Thread title</label>
+        <input type="text" class="form-input" placeholder="What's your question?" id="new-title">
+      </div>
+      <div class="form-field">
+        <label class="form-label">Category</label>
+        <select class="form-select" id="new-cat">
+          <option value="general">General</option>
+          <option value="note">Notes</option>
+          <option value="paper">Past paper</option>
+        </select>
+      </div>
+      <div class="form-field">
+        <label class="form-label">Description</label>
+        <textarea class="form-textarea" placeholder="Add more detail about your question..." id="new-body"></textarea>
+      </div>
+      <div class="reply-actions">
+        <button class="btn-ghost" onclick="toggleNewThread()">Cancel</button>
+        <button class="btn-accent" onclick="postNewThread()">Post thread</button>
+      </div>
+    </div>
+
+    <!-- THREADS -->
+    <div id="forum-threads">
+
+      <div class="forum-card" data-id="1">
+        <div class="forum-main">
+          <div class="avatar av-purple">TM</div>
+          <div class="forum-content">
+            <div class="forum-title">How do you solve Q4 on the Nov 2023 paper?</div>
+            <div class="forum-snippet">I keep getting the wrong answer for the symbolic differentiation in question 4b. Has anyone worked through this one step by step?</div>
+            <div class="forum-by">@thabo_m · 3 days ago</div>
+          </div>
+          <div class="forum-tag paper">PAST PAPER</div>
+        </div>
+        <div class="replies-section open" id="replies-1">
+          <div class="reply">
+            <div class="avatar av-green" style="width:26px;height:26px;font-size:10px;">PK</div>
+            <div class="reply-body">
+              <div class="reply-meta">@priya_k · 2 days ago</div>
+              <p>You need to apply the chain rule before substituting — the memo covers it on page 8 if you downloaded that version.</p>
+            </div>
+          </div>
+          <div class="reply-input-wrap">
+            <textarea rows="2" placeholder="Add a reply..." id="reply-input-1"></textarea>
+            <div class="reply-actions">
+              <button class="btn-ghost" onclick="document.getElementById('reply-input-1').value=''">Clear</button>
+              <button class="btn-accent" onclick="postReply(1)">Reply</button>
+            </div>
+          </div>
+        </div>
+        <div class="forum-footer">
+          <button class="vote-btn" onclick="this.classList.toggle('voted'); updateVote(this)">
+            ▲ <span>4</span>
+          </button>
+          <div class="forum-stat">
+            <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+            4 replies
+          </div>
+          <div class="forum-stat">👁 23 views</div>
+          <button class="btn-ghost" style="margin-left:auto;font-size:11px;" onclick="toggleReplies(1)">Toggle replies</button>
+        </div>
+      </div>
+
+      <div class="forum-card" data-id="2">
+        <div class="forum-main">
+          <div class="avatar av-orange">LN</div>
+          <div class="forum-content">
+            <div class="forum-title">Chapter 3 summary – any corrections needed?</div>
+            <div class="forum-snippet">Spotted a possible typo in the Groebner basis section. Can someone double-check equation 3.7? I think the subscript might be off.</div>
+            <div class="forum-by">@lena_n · 1 week ago</div>
+          </div>
+          <div class="forum-tag note">NOTES</div>
+        </div>
+        <div class="replies-section" id="replies-2">
+          <div class="reply-input-wrap">
+            <textarea rows="2" placeholder="Add a reply..." id="reply-input-2"></textarea>
+            <div class="reply-actions">
+              <button class="btn-ghost" onclick="document.getElementById('reply-input-2').value=''">Clear</button>
+              <button class="btn-accent" onclick="postReply(2)">Reply</button>
+            </div>
+          </div>
+        </div>
+        <div class="forum-footer">
+          <button class="vote-btn" onclick="this.classList.toggle('voted'); updateVote(this)">
+            ▲ <span>1</span>
+          </button>
+          <div class="forum-stat">
+            <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+            1 reply
+          </div>
+          <div class="forum-stat">👁 11 views</div>
+          <button class="btn-ghost" style="margin-left:auto;font-size:11px;" onclick="toggleReplies(2)">Toggle replies</button>
+        </div>
+      </div>
+
+      <div class="forum-card" data-id="3">
+        <div class="forum-main">
+          <div class="avatar av-red">SK</div>
+          <div class="forum-content">
+            <div class="forum-title">MuPAD vs Mathematica — is there an exam difference?</div>
+            <div class="forum-snippet">The textbook uses MuPAD but I've seen some notes reference Mathematica commands. Are both tested, or should I focus on one?</div>
+            <div class="forum-by">@sipho_k · 2 weeks ago</div>
+          </div>
+          <div class="forum-tag general">GENERAL</div>
+        </div>
+        <div class="replies-section" id="replies-3">
+          <div class="reply">
+            <div class="avatar av-purple" style="width:26px;height:26px;font-size:10px;">TM</div>
+            <div class="reply-body">
+              <div class="reply-meta">@thabo_m · 13 days ago</div>
+              <p>Based on all the past papers I've seen, MuPAD is the primary system. Mathematica isn't explicitly tested but understanding both helps conceptually.</p>
+            </div>
+          </div>
+          <div class="reply-input-wrap">
+            <textarea rows="2" placeholder="Add a reply..." id="reply-input-3"></textarea>
+            <div class="reply-actions">
+              <button class="btn-ghost" onclick="document.getElementById('reply-input-3').value=''">Clear</button>
+              <button class="btn-accent" onclick="postReply(3)">Reply</button>
+            </div>
+          </div>
+        </div>
+        <div class="forum-footer">
+          <button class="vote-btn" onclick="this.classList.toggle('voted'); updateVote(this)">
+            ▲ <span>7</span>
+          </button>
+          <div class="forum-stat">
+            <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+            7 replies
+          </div>
+          <div class="forum-stat">👁 41 views</div>
+          <button class="btn-ghost" style="margin-left:auto;font-size:11px;" onclick="toggleReplies(3)">Toggle replies</button>
+        </div>
+      </div>
+
+      <div class="forum-card" data-id="4">
+        <div class="forum-main">
+          <div class="avatar av-green">PK</div>
+          <div class="forum-content">
+            <div class="forum-title">Study group – anyone interested?</div>
+            <div class="forum-snippet">Thinking of starting a weekly online study session before exams. Drop a reply if you'd want to join. Planning for Saturdays.</div>
+            <div class="forum-by">@priya_k · 4 days ago</div>
+          </div>
+          <div class="forum-tag general">GENERAL</div>
+        </div>
+        <div class="replies-section" id="replies-4">
+          <div class="reply-input-wrap">
+            <textarea rows="2" placeholder="Add a reply..." id="reply-input-4"></textarea>
+            <div class="reply-actions">
+              <button class="btn-ghost" onclick="document.getElementById('reply-input-4').value=''">Clear</button>
+              <button class="btn-accent" onclick="postReply(4)">Reply</button>
+            </div>
+          </div>
+        </div>
+        <div class="forum-footer">
+          <button class="vote-btn" onclick="this.classList.toggle('voted'); updateVote(this)">
+            ▲ <span>9</span>
+          </button>
+          <div class="forum-stat">
+            <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+            0 replies
+          </div>
+          <div class="forum-stat">👁 18 views</div>
+          <button class="btn-ghost" style="margin-left:auto;font-size:11px;" onclick="toggleReplies(4)">Toggle replies</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="page-footer">
+    APM2616 · UNISA NOTES RESOURCE · COMMUNITY DRIVEN
+  </div>
+
+</div>
+
+<script>
+  function switchTab(name, btn) {
+    document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById('tab-' + name).classList.add('active');
+    btn.classList.add('active');
+  }
+
+  function toggleReplies(id) {
+    const s = document.getElementById('replies-' + id);
+    s.classList.toggle('open');
+  }
+
+  function postReply(threadId) {
+    const input = document.getElementById('reply-input-' + threadId);
+    const text = input.value.trim();
+    if (!text) return;
+
+    const avatars = ['av-purple', 'av-green', 'av-orange', 'av-red'];
+    const av = avatars[Math.floor(Math.random() * avatars.length)];
+
+    const reply = document.createElement('div');
+    reply.className = 'reply';
+    reply.innerHTML = `
+      <div class="avatar ${av}" style="width:26px;height:26px;font-size:10px;">ME</div>
+      <div class="reply-body">
+        <div class="reply-meta">@you · just now</div>
+        <p>${escHtml(text)}</p>
+      </div>
+    `;
+
+    const section = document.getElementById('replies-' + threadId);
+    const inputWrap = section.querySelector('.reply-input-wrap');
+    section.insertBefore(reply, inputWrap);
+    input.value = '';
+
+    // update reply count
+    const footer = section.nextElementSibling;
+    const countEl = footer.querySelector('.forum-stat span, .forum-stat');
+    const stats = footer.querySelectorAll('.forum-stat');
+    if (stats.length > 0) {
+      const text2 = stats[0].textContent;
+      const match = text2.match(/(\d+)/);
+      if (match) {
+        const newCount = parseInt(match[1]) + 1;
+        stats[0].innerHTML = stats[0].innerHTML.replace(/\d+ repl/, newCount + ' repl');
+      }
+    }
+  }
+
+  let threadCount = 4;
+  const avatarColors = ['av-purple', 'av-green', 'av-orange', 'av-red'];
+  const tagMap = { general: 'GENERAL', note: 'NOTES', paper: 'PAST PAPER' };
+  const tagClass = { general: 'general', note: 'note', paper: 'paper' };
+
+  function toggleNewThread() {
+    const form = document.getElementById('new-thread-form');
+    form.classList.toggle('open');
+  }
+
+  function postNewThread() {
+    const title = document.getElementById('new-title').value.trim();
+    const body = document.getElementById('new-body').value.trim();
+    const cat = document.getElementById('new-cat').value;
+    if (!title) { alert('Please add a title.'); return; }
+
+    threadCount++;
+    const id = threadCount;
+    const av = avatarColors[Math.floor(Math.random() * avatarColors.length)];
+
+    const card = document.createElement('div');
+    card.className = 'forum-card';
+    card.dataset.id = id;
+    card.style.animationDelay = '0s';
+    card.innerHTML = `
+      <div class="forum-main">
+        <div class="avatar ${av}">ME</div>
+        <div class="forum-content">
+          <div class="forum-title">${escHtml(title)}</div>
+          <div class="forum-snippet">${escHtml(body || 'No description provided.')}</div>
+          <div class="forum-by">@you · just now</div>
+        </div>
+        <div class="forum-tag ${tagClass[cat]}">${tagMap[cat]}</div>
+      </div>
+      <div class="replies-section open" id="replies-${id}">
+        <div class="reply-input-wrap">
+          <textarea rows="2" placeholder="Be the first to reply..." id="reply-input-${id}"></textarea>
+          <div class="reply-actions">
+            <button class="btn-ghost" onclick="document.getElementById('reply-input-${id}').value=''">Clear</button>
+            <button class="btn-accent" onclick="postReply(${id})">Reply</button>
+          </div>
+        </div>
+      </div>
+      <div class="forum-footer">
+        <button class="vote-btn" onclick="this.classList.toggle('voted'); updateVote(this)">▲ <span>0</span></button>
+        <div class="forum-stat">0 replies</div>
+        <div class="forum-stat">👁 1 view</div>
+        <button class="btn-ghost" style="margin-left:auto;font-size:11px;" onclick="toggleReplies(${id})">Toggle replies</button>
+      </div>
+    `;
+
+    const container = document.getElementById('forum-threads');
+    container.insertBefore(card, container.firstChild);
+
+    document.getElementById('new-title').value = '';
+    document.getElementById('new-body').value = '';
+    document.getElementById('new-thread-form').classList.remove('open');
+
+    const statEl = document.getElementById('stat-threads');
+    statEl.textContent = parseInt(statEl.textContent) + 1;
+  }
+
+  function openForumFor(resourceName) {
+    document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById('tab-forum').classList.add('active');
+    document.querySelectorAll('.tab-btn')[2].classList.add('active');
+
+    document.getElementById('new-thread-form').classList.add('open');
+    document.getElementById('new-title').value = 'Question about: ' + resourceName;
+    document.getElementById('new-title').focus();
+  }
+
+  function updateVote(btn) {
+    const span = btn.querySelector('span');
+    const current = parseInt(span.textContent);
+    span.textContent = btn.classList.contains('voted') ? current + 1 : current - 1;
+  }
+
+  function escHtml(str) {
+    return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
+</script>
+
+</body>
+</html>

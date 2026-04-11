@@ -1,1 +1,26 @@
+body {
+  background-color:black;
+  /*line-height: 1.6;*/
+}
 
+nav {
+  display:flex;
+  align-items:center;
+}
+
+.nav-brand {
+  font-size:13px;
+  letter spacing:0.05em;
+}
+
+.nav-sep {
+  font-size:12px;
+}
+
+.nav-badge {
+  margin-left:auto;
+  padding:4px 10px
+  font-size:11px;
+  border:1px solid red;
+  border-radius:4px;
+}

@@ -7,6 +7,9 @@ body {
 .wrapper {
   position: relative;
   z-index:1;
+  max-width:100%;
+  margin:0 auto;
+  padding:0 1.5rem 4rem;
 }
 
 nav {
